@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#1e40af">
+  <title>GlucoLaser - Non-Invasive Glucose Monitor</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Header -->
+    <header class="app-header">
+      <div class="header-content">
+        <div>
+          <h1 class="header-title">HandyRay-Glu</h1>
+          <p class="header-subtitle">개인용 혈당 측정기</p>
+        </div>
+        <button class="icon-button" id="settingsBtn" aria-label="Settings">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path>
+            <circle cx="12" cy="12" r="3"></circle>
+          </svg>
+        </button>
+      </div>
+      
+      <!-- Navigation Tabs -->
+      <nav class="nav-tabs">
+        <button class="nav-tab active" data-view="dashboard">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect width="7" height="9" x="3" y="3" rx="1"></rect>
+            <rect width="7" height="5" x="14" y="3" rx="1"></rect>
+            <rect width="7" height="9" x="14" y="12" rx="1"></rect>
+            <rect width="7" height="5" x="3" y="16" rx="1"></rect>
+          </svg>
+          Dashboard
+        </button>
+        <button class="nav-tab" data-view="insights">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 3v18h18"></path>
+            <path d="m19 9-5 5-4-4-3 3"></path>
+          </svg>
+          Insights
+        </button>
+      </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Dashboard View -->
+      <div id="dashboardView" class="view active">
+        <!-- Device Status Card -->
+        <div class="card glass-card">
+          <div class="device-status">
+            <div class="device-info">
+              <div class="device-icon connected">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 20h.01"></path>
+                  <path d="M8.5 16.5a5 5 0 0 1 7 0"></path>
+                  <path d="M5 12.5a10 10 0 0 1 14 0"></path>
+                  <path d="M2 8.82a15 15 0 0 1 20 0"></path>
+                </svg>
+              </div>
+              <div>
+                <p class="device-title">Device Connected</p>
+                <p class="device-subtitle">장치가 연결되었습니다.</p>
+              </div>
+            </div>
+            <div class="status-indicator"></div>
+          </div>
+        </div>
+
+        <!-- Current Glucose Hero Card -->
+        <div class="card glass-card glucose-hero">
+          <div class="gradient-bg"></div>
+          <div class="hero-content">
+            <div class="hero-header">
+              <div>
+                <p class="hero-label">현재 LEVEL</p>
+                <p class="hero-timestamp">2 분 전</p>
+              </div>
+              <span class="badge badge-normal">정상</span>
+            </div>
+
+            <div class="glucose-display">
+              <div class="glucose-value-wrapper">
+                <span class="glucose-value" id="currentGlucose">105</span>
+                <span class="glucose-unit">mg/dL</span>
+              </div>
+              <svg class="trend-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M5 12h14"></path>
+              </svg>
+            </div>
+
+            <div class="laser-indicator">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M6 3v12"></path>
+                <circle cx="6" cy="18" r="3"></circle>
+                <path d="M18 9a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
+                <path d="M18 3v12"></path>
+                <circle cx="18" cy="18" r="3"></circle>
+              </svg>
+              <span>혈당 측정</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="action-grid">
+          <button class="action-button primary">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M6 3v12"></path>
+              <circle cx="6" cy="18" r="3"></circle>
+              <path d="M18 9a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
+              <path d="M18 3v12"></path>
+              <circle cx="18" cy="18" r="3"></circle>
+            </svg>
+            <span>측정</span>
+          </button>
+          <button class="action-button secondary">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2"></path>
+            </svg>
+            <span>History</span>
+          </button>
+        </div>
+
+        <!-- 24-Hour Chart -->
+        <div class="card glass-card">
+          <div class="chart-header">
+            <h3 class="chart-title">24시간 트랜드</h3>
+            <p class="chart-subtitle">최근 측정 2분 전</p>
+          </div>
+          <div class="chart-container">
+            <canvas id="glucoseChart"></canvas>
+            <div id="chartTooltip" style="
+              position: absolute; 
+              display: none; 
+              background: rgba(15, 23, 42, 0.9); 
+              color: white; 
+              padding: 8px 12px; 
+              border-radius: 8px; 
+              font-size: 12px; 
+              pointer-events: none; 
+              z-index: 1000;
+              box-shadow: var(--shadow-lg);
+              border: 1px solid rgba(255,255,255,0.1);
+            "></div>
+          </div>
+        </div>
+
+        <!-- Target Range Info -->
+        <div class="card info-card">
+          <div class="info-grid">
+            <div>
+              <p class="info-label">목표 수치</p>
+              <p class="info-value">70 - 140 mg/dL</p>
+            </div>
+            <div class="info-right">
+               <p class="info-label">목표 범위</p> 
+              <p class="info-value accent">89%</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Insights View -->
+      <div id="insightsView" class="view">
+        <!-- AI Summary -->
+        <div class="card glass-card ai-card">
+          <div class="ai-content">
+            <div class="ai-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z"></path>
+                <path d="M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z"></path>
+                <path d="M15 13a1 1 0 0 0-3 0"></path>
+                <path d="M9 13a1 1 0 0 0-3 0"></path>
+              </svg>
+            </div>
+            <div>
+              <h3 class="ai-title">AI 일간 요약</h3>
+              <p class="ai-text">오늘 혈당 수치가 매우 좋았습니다! 정상 범위를 유지했습니다. 이러한 추세를 유지하려면 저녁 식사 후 가벼운 산책을 해보세요.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Daily Stats -->
+        <div class="stats-grid">
+          <div class="card glass-card stat-card">
+            <div class="stat-header">
+              <div class="stat-icon accent">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <circle cx="12" cy="12" r="6"></circle>
+                  <circle cx="12" cy="12" r="2"></circle>
+                </svg>
+              </div>
+              <p class="stat-label">오늘 평균</p>
+            </div>
+            <p class="stat-value">108</p>
+            <p class="stat-unit">mg/dL</p>
+          </div>
+
+          <div class="card glass-card stat-card">
+            <div class="stat-header">
+              <div class="stat-icon primary">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2"></path>
+                </svg>
+              </div>
+              <p class="stat-label">측정 횟수</p>
+            </div>
+            <p class="stat-value">24</p>
+            <p class="stat-unit">회 측정</p>
+          </div>
+        </div>
+
+        <!-- Distribution -->
+        <div class="card glass-card">
+          <h3 class="section-title">오늘의 혈당 요약</h3>
+          <div class="distribution-list">
+            <div class="distribution-item">
+              <div class="distribution-header">
+                <div class="distribution-label">
+                  <div class="dot accent"></div>
+                  <span>정상</span>
+                </div>
+                <span class="distribution-percent accent">89%</span>
+              </div>
+              <div class="progress-bar">
+                <div class="progress-fill accent" style="width: 89%"></div>
+              </div>
+            </div>
+
+            <div class="distribution-item">
+              <div class="distribution-header">
+                <div class="distribution-label">
+                  <div class="dot warning"></div>
+                  <span>높은</span>
+                </div>
+                <span class="distribution-percent warning">8%</span>
+              </div>
+              <div class="progress-bar">
+                <div class="progress-fill warning" style="width: 8%"></div>
+              </div>
+            </div>
+
+            <div class="distribution-item">
+              <div class="distribution-header">
+                <div class="distribution-label">
+                  <div class="dot danger"></div>
+                  <span>낮은</span>
+                </div>
+                <span class="distribution-percent danger">3%</span>
+              </div>
+              <div class="progress-bar">
+                <div class="progress-fill danger" style="width: 3%"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pattern Analysis -->
+        <div class="card glass-card">
+          <h3 class="section-title">분석</h3>
+          <div class="pattern-list">
+            <div class="pattern-card accent-border">
+              <div class="pattern-icon accent">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="4"></circle>
+                  <path d="M12 2v2"></path>
+                  <path d="M12 20v2"></path>
+                  <path d="m4.93 4.93 1.41 1.41"></path>
+                  <path d="m17.66 17.66 1.41 1.41"></path>
+                  <path d="M2 12h2"></path>
+                  <path d="M20 12h2"></path>
+                  <path d="m6.34 17.66-1.41 1.41"></path>
+                  <path d="m19.07 4.93-1.41 1.41"></path>
+                </svg>
+              </div>
+              <div class="pattern-content">
+                <div class="pattern-header">
+                  <p class="pattern-title">아침 평균</p>
+                  <span class="badge badge-success">Excellent</span>
+                </div>
+                <p class="pattern-time">102 mg/dL · 6:00 AM - 12:00 PM</p>
+              </div>
+            </div>
+
+            <div class="pattern-card primary-border">
+              <div class="pattern-icon primary">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M10 2v2.343"></path>
+                  <path d="M14 2v6.343"></path>
+                  <path d="M8 8h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2z"></path>
+                  <path d="M9 12h.01"></path>
+                  <path d="M15 12h.01"></path>
+                  <path d="M9 16h6"></path>
+                </svg>
+              </div>
+              <div class="pattern-content">
+                <div class="pattern-header">
+                  <p class="pattern-title">오후 평균</p>
+                  <span class="badge badge-primary">Good</span>
+                </div>
+                <p class="pattern-time">115 mg/dL · 12:00 PM - 6:00 PM</p>
+              </div>
+            </div>
+
+            <div class="pattern-card muted-border">
+              <div class="pattern-icon muted">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
+                </svg>
+              </div>
+              <div class="pattern-content">
+                <div class="pattern-header">
+                  <p class="pattern-title">저녁 평균</p>
+                  <span class="badge badge-outline">Normal</span>
+                </div>
+                <p class="pattern-time">108 mg/dL · 6:00 PM - 12:00 AM</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Achievement Card -->
+        <div class="card glass-card achievement-card">
+          <div class="achievement-content">
+            <div class="achievement-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="m15.477 12.89 1.515 8.526a.5.5 0 0 1-.81.47l-3.58-2.687a1 1 0 0 0-1.197 0l-3.586 2.686a.5.5 0 0 1-.81-.469l1.514-8.526"></path>
+                <circle cx="12" cy="8" r="6"></circle>
+              </svg>
+            </div>
+            <div>
+              <h3 class="achievement-title">주간 성과</h3>
+              <p class="achievement-text">이번 주에도 85%의 범위를 유지하셨습니다! </p>
+              <div class="achievement-trend">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="m22 7-8.5 8.5a1.414 1.414 0 0 1-2 0L8 12l-5.5 5.5"></path>
+                  <polyline points="16 7 22 7 22 13"></polyline>
+                </svg>
+                <span>지난주보다 +5%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tips -->
+        <div class="card tips-card">
+          <h3 class="section-title">맞춤형 팁</h3>
+          <ul class="tips-list">
+            <li>
+              <span class="tip-bullet">•</span>
+              <span>혈당이 오후 2시쯤 급증하는 경향이 있습니다. 점심 식사후 가벼운 산책을  해보세요.</span>
+            </li>
+            <li>
+              <span class="tip-bullet">•</span>
+              <span>저녁 산책이 측정 범위에 긍정적인 양향을 미쳤습니다.</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
